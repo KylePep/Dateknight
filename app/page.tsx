@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const router = useRouter();
   useEffect(() => {
     // Replace baseURL with your Laravel API if needed
     const api = axios.create({
@@ -19,7 +21,9 @@ export default function HomePage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-bold">Testing Laravel API...</h1>
+
+      <h1 className="text-2xl font-bold">Date Knight</h1>
+
     </main>
   );
 }
