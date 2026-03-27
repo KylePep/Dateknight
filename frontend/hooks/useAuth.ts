@@ -33,7 +33,7 @@ export default function useAuth() {
       });
       setUser(data);
       return data;
-    } catch {
+    } catch (err: any){
       setUser(null);
       return null;
     }
@@ -79,6 +79,8 @@ export default function useAuth() {
         withCredentials: true,
         headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken || '') },
       });
+
+      setUser(null);
       setMessage('Logged out');
     } catch (err: any) {
       console.error(err);

@@ -1,10 +1,10 @@
 'use client';
 
-import useAuth from '@/hooks/useAuth';
+import { useAuthContext } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, auth, logout } = useAuthContext();
   const router = useRouter();
 
   return (
@@ -15,6 +15,7 @@ export default function Navbar() {
 
       {user ? (
         <div>
+          <button className='me-8' onClick={() => router.push('/date')}>Dates</button>
           <span className="mr-4">Hi, {user.name}</span>
           <button onClick={logout}>Logout</button>
         </div>

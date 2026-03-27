@@ -1,20 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import useAuth from '@/hooks/useAuth';
+import { useAuthContext } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { auth, message, loading } = useAuth();
+  const { auth, message, loading } = useAuthContext();
+  const router = useRouter();
 
   const handleSubmit = async () => {
     const payload: Record<string, string> =
       mode === 'register' ? { name, email, password } : { email, password };
 
-    await auth(mode, payload);
+    const result = await auth(mode, payload);
+
+    if (result) {
+      router.push('/');
+    }
+
     setPassword('');
   };
 
