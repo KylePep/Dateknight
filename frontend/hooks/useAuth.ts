@@ -28,7 +28,7 @@ export default function useAuth() {
 
   const getUser = async () => {
     try {
-      const { data } = await api.get('/api/user', {
+      const { data } = await api.get('/api/auth/user', {
         withCredentials: true,
       });
       setUser(data);
@@ -47,7 +47,7 @@ export default function useAuth() {
       await api.get('/sanctum/csrf-cookie', { withCredentials: true });
 
       const xsrfToken = getCookie('XSRF-TOKEN');
-      const { data } = await api.post(`/api/${mode}`, payload, {
+      const { data } = await api.post(`/api/auth/${mode}`, payload, {
         withCredentials: true,
         headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken || '') },
       });
@@ -75,7 +75,7 @@ export default function useAuth() {
       await api.get('/sanctum/csrf-cookie', { withCredentials: true });
 
       const xsrfToken = getCookie('XSRF-TOKEN');
-      await api.post('/api/logout', {}, { 
+      await api.post('/api/auth/logout', {}, { 
         withCredentials: true,
         headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken || '') },
       });
