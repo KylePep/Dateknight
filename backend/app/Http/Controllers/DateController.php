@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Date;
 use Illuminate\Http\Request;
 
 class DateController extends Controller
@@ -11,9 +12,9 @@ class DateController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'message' => 'List of dates'
-        ]);
+        $dates = Date::with('user:id,name')->where('is_public', true)->get();
+
+        return response()->json($dates);
     }
 
     /**
