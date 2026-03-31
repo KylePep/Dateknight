@@ -24,8 +24,6 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        SendWelcomeEmail::dispatch($user)->delay(now()->addSeconds(10));
-
         Auth::login($user);
 
         return response()->json($user);
