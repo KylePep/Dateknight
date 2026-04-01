@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function user(Request $request)
+    public function user()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load(['profile', 'friends.profile']);
         return $user;
     }
 }

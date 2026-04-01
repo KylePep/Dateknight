@@ -6,8 +6,8 @@ import api from '@/lib/api';
 type AuthMode = 'login' | 'register';
 
 export default function useAuth() {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
 
   // Fetch authenticated user
@@ -15,8 +15,10 @@ export default function useAuth() {
     try {
       const { data } = await api.get('/api/auth/user', { withCredentials: true });
       setUser(data);
+      setLoading(false);
       return data;
     } catch {
+      setLoading(false);
       setUser(null);
       return null;
     }
@@ -78,6 +80,7 @@ export default function useAuth() {
 
   // Load user on mount
   useEffect(() => {
+    setLoading(true);
     ensureCsrf().then(getUser);
   }, []);
 

@@ -13,8 +13,11 @@ export default function ProtectedLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/');
+    if (!loading) {
+      if (user === null) {
+        console.log("[USER]", user)
+        router.replace('/');
+      }
     }
   }, [user, loading, router]);
 
@@ -23,7 +26,7 @@ export default function ProtectedLayout({
   }
 
   if (!user) {
-    return null; // prevents flash
+    return null;
   }
 
   return <>{children}</>;
