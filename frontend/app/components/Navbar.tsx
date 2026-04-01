@@ -1,17 +1,27 @@
 'use client';
 
 import { useAuthContext } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Navbar() {
   const { user, auth, logout } = useAuthContext();
   const router = useRouter();
+  const pathName = usePathname();
+
+  useEffect(() => {
+    if (!user && pathName !== '/' && pathName !== '/login') {
+      router.push('/');
+    }
+  }, [user, pathName, router]);
 
   return (
     <nav className="p-4 bg-gray-800 text-white flex justify-between">
       <button
         onClick={() => router.push('/')}
-      >DateKnight</button>
+      >
+        DateKnight
+      </button>
 
       {user ? (
         <div>
