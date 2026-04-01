@@ -29,9 +29,8 @@ export default function useAuth() {
 
   const getUser = async () => {
     try {
-      const { data } = await api.get('/api/auth/user', {
-        withCredentials: true,
-      });
+      const { data } = await api.get('/api/auth/user');
+      
       setUser(data);
       return data;
     } catch (err: any){
@@ -49,7 +48,7 @@ export default function useAuth() {
 
       const { data } = await api.post(`/api/auth/${mode}`, payload);
 
-      await getUser();
+      setUser(data);
 
       setMessage(
         mode === 'login'
@@ -68,11 +67,13 @@ export default function useAuth() {
 
   const logout = async () => {
     try {
-      await ensureCsrf();
       await api.post('/api/auth/logout');
 
       setUser(null);
       setMessage('Logged out');
+
+      // get fresh CSRF token for next login/register
+      await api.get('/sanctum/csrf-cookie');
     } catch (err: any) {
       setMessage(err.response?.data?.message || 'Network error');
     }
