@@ -10,50 +10,51 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+    // public function register(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:8',
+    //     ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //     ]);
 
-        Auth::login($user);
+    //     Auth::login($user);
 
-        $request->session()->regenerate();
+    //     $request->session()->regenerate();
 
-        return response()->json(Auth::user());
-    }
+    //     return response()->json(Auth::user());
+    // }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->only('email', 'password');
 
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
+    //     if (!Auth::attempt($credentials)) {
+    //         return response()->json(['message' => 'Invalid credentials'], 401);
+    //     }
 
-        $request->session()->regenerate();
+    //     $request->session()->regenerate();
 
-        return response()->json(Auth::user());
-    }
+    //     return response()->json(Auth::user());
+    // }
 
-    public function logout(Request $request)
-    {
-        $request->session()->invalidate(); 
-        $request->session()->regenerateToken();
+    // public function logout(Request $request)
+    // {
+    //     $request->session()->invalidate(); 
+    //     $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logged out']);
-    }
+    //     return response()->json(['message' => 'Logged out']);
+    // }
 
     public function user(Request $request)
     {
-        return $request->user();
+        $user = Auth::user();
+        return $user;
     }
 }

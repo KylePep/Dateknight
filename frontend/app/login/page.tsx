@@ -9,12 +9,13 @@ export default function AuthPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password_confirmation, setPasswordConfirmation] = useState('');
   const { auth, message, loading } = useAuthContext();
   const router = useRouter();
 
   const handleSubmit = async () => {
     const payload: Record<string, string> =
-      mode === 'register' ? { name, email, password } : { email, password };
+      mode === 'register' ? { name, email, password, password_confirmation } : { email, password };
 
     const result = await auth(mode, payload);
 
@@ -23,6 +24,7 @@ export default function AuthPage() {
     }
 
     setPassword('');
+    setPasswordConfirmation('');
   };
 
   return (
@@ -65,6 +67,15 @@ export default function AuthPage() {
         onChange={(e) => setPassword(e.target.value)}
         className="border p-2 mb-2 w-full"
       />
+      {mode === 'register' && (
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={password_confirmation}
+          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          className="border p-2 mb-2 w-full"
+        />
+      )}
 
       <button
         onClick={handleSubmit}
