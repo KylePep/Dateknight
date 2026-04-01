@@ -1,10 +1,30 @@
 import axios from 'axios';
 
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+
+  const cookies = document.cookie.split('; ');
+  for (const cookie of cookies) {
+    const [key, value] = cookie.split('=');
+    if (key === name) return decodeURIComponent(value);
+  }
+
+  return null;
+}
+
 const api = axios.create({
-  baseURL: 'http://localhost:8000', // your Laravel backend
-  withCredentials: true,            // send cookies on every request
-  xsrfCookieName: 'XSRF-TOKEN',     // Laravel CSRF cookie
-  xsrfHeaderName: 'X-XSRF-TOKEN',   // header Laravel expects
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
+});
+
+api.interceptors.request.use((config) => {
+  const token = getCookie('XSRF-TOKEN');
+
+  if (token) {
+    config.headers['X-XSRF-TOKEN'] = token;
+  }
+
+  return config;
 });
 
 export default api;

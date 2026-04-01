@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import api from '@/lib/api';
+import { ensureCsrf } from '@/lib/csrf';
+import { post } from '@/lib/request';
 
 interface CreateDateFormProps {
   onDateCreated: (date: DateItem) => void;
@@ -52,25 +53,20 @@ export default function CreateDateForm({ onDateCreated }: CreateDateFormProps) {
     setError('');
 
     try {
+      await ensureCsrf();
 
+      const payload = {
+        title, description, is_public: isPublic
+      }
 
+      const res = await post<CreateDateResponse>('/api/dates', payload);
 
-      const xsrfToken = getCookie('XSRF-TOKEN');
-      const res = await api.post<CreateDateResponse>('/api/dates', {
-        title,
-        description,
-        is_public: isPublic,
-      }, {
-        withCredentials: true,
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken || '') },
-      });
 
       onDateCreated(res.data.data);
       setTitle('');
       setDescription('');
       setIsPublic(true);
     } catch (err: any) {
-      console.error(err);
       setError(err.response?.data?.message || 'Failed to create date');
     } finally {
       setLoading(false);

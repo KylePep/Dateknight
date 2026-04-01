@@ -2,6 +2,7 @@
 
 import { use, useEffect, useState } from 'react';
 import api from '@/lib/api';
+import { ensureCsrf } from '@/lib/csrf';
 
 type AuthMode = 'login' | 'register';
 
@@ -44,13 +45,9 @@ export default function useAuth() {
     setMessage('');
 
     try {
-      await api.get('/sanctum/csrf-cookie', { withCredentials: true });
+      await ensureCsrf();
 
-      const xsrfToken = getCookie('XSRF-TOKEN');
-      const { data } = await api.post(`/api/auth/${mode}`, payload, {
-        withCredentials: true,
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken || '') },
-      });
+      const { data } = await api.post(`/api/auth/${mode}`, payload);
 
       await getUser();
 
@@ -62,7 +59,6 @@ export default function useAuth() {
 
       return data;
     } catch (err: any) {
-      console.error(err);
       setMessage(err.response?.data?.message || 'Network error');
       return null;
     } finally {
@@ -72,18 +68,12 @@ export default function useAuth() {
 
   const logout = async () => {
     try {
-      await api.get('/sanctum/csrf-cookie', { withCredentials: true });
-
-      const xsrfToken = getCookie('XSRF-TOKEN');
-      await api.post('/api/auth/logout', {}, { 
-        withCredentials: true,
-        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrfToken || '') },
-      });
+      await ensureCsrf();
+      await api.post('/api/auth/logout');
 
       setUser(null);
       setMessage('Logged out');
     } catch (err: any) {
-      console.error(err);
       setMessage(err.response?.data?.message || 'Network error');
     }
   };
