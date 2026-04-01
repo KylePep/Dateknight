@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Date;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DateController extends Controller
 {
@@ -12,7 +13,31 @@ class DateController extends Controller
      */
     public function index()
     {
-        $dates = Date::with('user:id,name')->where('is_public', true)->get();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $publicDates = Date::with('user:id,name')
+        ->where('is_public', true)
+        ->where('user_id', '!=', $user->id)
+        ->get();
+
+        $myDates = $user->dates()->get();
+
+        return response()->json([
+            'public' => $publicDates,
+            'mine' => $myDates
+        ]);
+    }
+
+    public function userDates($id){
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($id != $user->id){
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $dates = $user->dates()->get();
 
         return response()->json($dates);
     }
@@ -22,9 +47,20 @@ class DateController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:2500',
+            'is_public' => 'required|boolean',
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $date = $user->dates()->create($validated);
+
         return response()->json([
-            'message' => 'Date created',
-            'data' => $request->all()
+            'message' => 'Date Created successfully',
+            'data' => $date,
         ], 201);
     }
 

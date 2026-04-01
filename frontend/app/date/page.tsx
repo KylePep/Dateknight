@@ -2,6 +2,7 @@
 
 import api from "@/lib/api";
 import { useEffect, useState } from "react";
+import CreateDateForm from "../components/createDateForm";
 
 interface DateItem {
   id: number;
@@ -9,23 +10,24 @@ interface DateItem {
   description: string;
   is_public: boolean;
   user: {
-    id: number,
-    name: string
+    id: number;
+    name: string;
   };
 }
 
-export default function HomePage() {
+export default function DatePage() {
   const [dates, setDates] = useState<DateItem[]>([]);
+  const [myDates, setMyDates] = useState<DateItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchDates() {
       try {
-        const res = await api.get<DateItem[]>("/api/dates", {
+        const res = await api.get<{ public: DateItem[], mine: DateItem[] }>("/api/dates", {
           withCredentials: true,
         });
-        console.log(res.data);
-        setDates(res.data);
+        setDates(res.data.public);
+        setMyDates(res.data.mine);
       } catch (err) {
         console.error(err);
       } finally {
@@ -35,26 +37,54 @@ export default function HomePage() {
 
     fetchDates();
   }, []);
+
+  const handleNewDate = (date: DateItem) => {
+    setMyDates(prev => [date, ...prev]);
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4">Dates</h1>
-      {dates.length > 0 && (
-        <section className="max-w-3xl mx-auto">
-          <ul>
-            {dates.map((date) => (
-              <li key={date.id} className="mb-2 border border-1 border-sky-300 p-2 rounded-xl">
-                <span >Created by: {date.user.name}</span>
+    <div className="flex min-h-screen gap-8 p-4">
+      {/* Left: Form + My Dates */}
+      <div className="flex-1 flex flex-col gap-4">
+        <CreateDateForm onDateCreated={handleNewDate} />
+
+        <section>
+          <h2 className="font-bold text-lg mb-2">My Dates</h2>
+          {myDates.length > 0 ? (
+            <ul className="flex flex-col gap-2">
+              {myDates.map(date => (
+                <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
+                  <strong>{date.title}</strong>: {date.description}{" "}
+                  {date.is_public ? "(Public)" : "(Private)"}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No dates yet.</p>
+          )}
+        </section>
+      </div>
+
+      {/* Right: All Public Dates */}
+      <div className="flex-1">
+        <h2 className="font-bold text-lg mb-2">All Public Dates</h2>
+        {dates.length > 0 ? (
+          <ul className="flex flex-col gap-2">
+            {dates.map(date => (
+              <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
+                <span>Created by: {date.user.name}</span>
                 <hr />
                 <strong>{date.title}</strong>: {date.description}{" "}
                 {date.is_public ? "(Public)" : "(Private)"}
               </li>
             ))}
           </ul>
-        </section>
-      )}
-
+        ) : (
+          <p>No public dates yet.</p>
+        )}
+      </div>
     </div>
   );
 }

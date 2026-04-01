@@ -18,4 +18,6 @@ Route::prefix('postman')->group(function(){
 
 Route::middleware('auth:sanctum')->group(function(){
   Route::apiResource('/', DateController::class);
+
+   Route::get('dates/user/{id}', [DateController::class, 'userDates']);
 });
