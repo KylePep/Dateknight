@@ -4,7 +4,7 @@ import FriendCard, { FriendResultCard } from '@/app/components/friendCard';
 import { useAuthContext } from '@/context/AuthContext';
 import { ensureCsrf } from '@/lib/csrf';
 import { get } from '@/lib/request';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 interface Friend {
   id: number;
@@ -18,8 +18,31 @@ export default function Page() {
   const { user } = useAuthContext();
   const [name, setName] = useState('');
   const [friendResults, setFriendResults] = useState<Friend[]>([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
+  const [incoming, setIncoming] = useState<Friend[]>([]);
+  const [outgoing, setOutgoing] = useState<Friend[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const fetchFriends = async () => {
+    try {
+      await ensureCsrf();
+
+      const res = await get<any>('/api/friends'); // we'll define this
+      setFriends(res.data.accepted);
+      setIncoming(res.data.incoming);
+      setOutgoing(res.data.outgoing);
+
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to load friends');
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchFriends();
+    }
+  }, [user]);
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
@@ -60,8 +83,8 @@ export default function Page() {
         )}
 
 
-        {user.friends && user.friends.length > 0 ? (
-          user.friends.map((friend) => (
+        {friends && friends.length > 0 ? (
+          friends.map((friend) => (
             <FriendCard key={friend.id} friend={friend} />
           ))
         ) : (

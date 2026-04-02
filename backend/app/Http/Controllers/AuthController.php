@@ -9,7 +9,7 @@ class AuthController extends Controller
 {
     public function user()
     {
-        $user = Auth::user()->load(['profile', 'friends.profile']);
+        $user = Auth::user()->load(['profile']);
         return $user;
     }
 }

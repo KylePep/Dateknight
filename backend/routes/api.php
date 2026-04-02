@@ -15,3 +15,4 @@ Route::prefix('auth')->group(function(){
     });
 
 Route::prefix('dates')->group(base_path('routes/api/dates.php'));
+Route::prefix('friends')->group(base_path('routes/api/friendships.php'));
