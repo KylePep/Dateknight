@@ -4,26 +4,8 @@ import FriendCard, { ExistingFriendCard, FriendIncomingCard, FriendOutgoingCard,
 import { useAuthContext } from '@/context/AuthContext';
 import { ensureCsrf } from '@/lib/csrf';
 import { get } from '@/lib/request';
+import { ExistingFriend, Friend, SearchResult } from '@/types/friend';
 import { FormEvent, useEffect, useState } from 'react';
-
-interface Friend {
-  friendship_id: number;
-  id: number;
-  name: string;
-  profile: {
-    avatar: string;
-  }
-}
-
-interface ExistingFriend extends Friend {
-  friendship_id: number;
-  status: 'pending' | 'accepted';
-}
-
-interface SearchResult {
-  available: Friend[];
-  existing: ExistingFriend[];
-}
 
 export default function Page() {
   const { user } = useAuthContext();

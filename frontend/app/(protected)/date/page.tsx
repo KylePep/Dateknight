@@ -1,32 +1,26 @@
 "use client";
 
 import CreateDateForm from "@/app/components/createDateForm";
+import { useAuthContext } from "@/context/AuthContext";
 import api from "@/lib/api";
+import { Friend } from "@/types/friend";
 import { useEffect, useState } from "react";
 
-interface DateItem {
-  id: number;
-  title: string;
-  description: string;
-  is_public: boolean;
-  user: {
-    id: number;
-    name: string;
-  };
-}
-
 export default function DatePage() {
-  const [dates, setDates] = useState<DateItem[]>([]);
+  const [otherDates, setOtherDates] = useState<DateItem[]>([]);
+  const [friendDates, setFriendDates] = useState<DateItem[]>([]);
   const [myDates, setMyDates] = useState<DateItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchDates() {
       try {
-        const res = await api.get<{ public: DateItem[], mine: DateItem[] }>("/api/dates", {
+        const res = await api.get<{ public_others: DateItem[], public_friends: DateItem[], mine: DateItem[] }>("/api/dates", {
           withCredentials: true,
         });
-        setDates(res.data.public);
+
+        setOtherDates(res.data.public_others);
+        setFriendDates(res.data.public_friends);
         setMyDates(res.data.mine);
       } catch (err) {
         console.error(err);
@@ -69,10 +63,25 @@ export default function DatePage() {
 
       {/* Right: All Public Dates */}
       <div className="flex-1">
-        <h2 className="font-bold text-lg mb-2">All Public Dates</h2>
-        {dates.length > 0 ? (
+        <h2 className="font-bold text-lg mb-2"> Friend's Public Dates</h2>
+        {friendDates.length > 0 ? (
           <ul className="flex flex-col gap-2">
-            {dates.map(date => (
+            {friendDates.map(date => (
+              <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
+                <span>Created by: {date.user.name}</span>
+                <hr />
+                <strong>{date.title}</strong>: {date.description}{" "}
+                {date.is_public ? "(Public)" : "(Private)"}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No public dates yet.</p>
+        )}
+        <h2 className="font-bold text-lg mb-2">Other's Public Dates</h2>
+        {otherDates.length > 0 ? (
+          <ul className="flex flex-col gap-2">
+            {otherDates.map(date => (
               <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
                 <span>Created by: {date.user.name}</span>
                 <hr />

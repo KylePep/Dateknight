@@ -14,18 +14,27 @@ class DateController extends Controller
     public function index()
     {
         /** @var \App\Models\User $user */
-        $user = Auth::user();
+        $user = Auth::user()->load(['friendsOfMine', 'friendOf']);
+
+        // Get all friends IDs
+        $friendIds = $user->friends->pluck('id');
+
 
         $publicDates = Date::with('user:id,name')
         ->where('is_public', true)
         ->where('user_id', '!=', $user->id)
         ->get();
 
+        // Separate friends' dates and other public dates
+        $friendsDates = $publicDates->whereIn('user_id', $friendIds)->values();
+        $otherPublicDates = $publicDates->whereNotIn('user_id', $friendIds)->values();
+
         $myDates = $user->dates()->get();
 
         return response()->json([
-            'public' => $publicDates,
-            'mine' => $myDates
+            'mine' => $myDates,
+            'public_friends' => $friendsDates,
+            'public_others' => $otherPublicDates,
         ]);
     }
 
