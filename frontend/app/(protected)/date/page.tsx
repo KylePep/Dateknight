@@ -1,9 +1,8 @@
 "use client";
 
 import CreateDateForm from "@/app/components/createDateForm";
-import { useAuthContext } from "@/context/AuthContext";
+import DateCard, { MyDateCard } from "@/app/components/DateCard";
 import api from "@/lib/api";
-import { Friend } from "@/types/friend";
 import { useEffect, useState } from "react";
 
 export default function DatePage() {
@@ -49,10 +48,7 @@ export default function DatePage() {
           {myDates.length > 0 ? (
             <ul className="flex flex-col gap-2">
               {myDates.map(date => (
-                <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
-                  <strong>{date.title}</strong>: {date.description}{" "}
-                  {date.is_public ? "(Public)" : "(Private)"}
-                </li>
+                <MyDateCard key={date.id} date={date} />
               ))}
             </ul>
           ) : (
@@ -67,12 +63,7 @@ export default function DatePage() {
         {friendDates.length > 0 ? (
           <ul className="flex flex-col gap-2">
             {friendDates.map(date => (
-              <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
-                <span>Created by: {date.user.name}</span>
-                <hr />
-                <strong>{date.title}</strong>: {date.description}{" "}
-                {date.is_public ? "(Public)" : "(Private)"}
-              </li>
+              <DateCard key={date.id} date={date} />
             ))}
           </ul>
         ) : (
@@ -82,12 +73,7 @@ export default function DatePage() {
         {otherDates.length > 0 ? (
           <ul className="flex flex-col gap-2">
             {otherDates.map(date => (
-              <li key={date.id} className="mb-2 border border-sky-300 p-2 rounded-xl">
-                <span>Created by: {date.user.name}</span>
-                <hr />
-                <strong>{date.title}</strong>: {date.description}{" "}
-                {date.is_public ? "(Public)" : "(Private)"}
-              </li>
+              <DateCard key={date.id} date={date} />
             ))}
           </ul>
         ) : (

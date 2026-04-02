@@ -1,6 +1,6 @@
 'use client';
 
-import FriendCard, { ExistingFriendCard, FriendIncomingCard, FriendOutgoingCard, FriendResultCard } from '@/app/components/friendCard';
+import FriendCard, { ExistingFriendCard, FriendIncomingCard, FriendOutgoingCard, FriendResultCard } from '@/app/components/FriendCard';
 import { useAuthContext } from '@/context/AuthContext';
 import { ensureCsrf } from '@/lib/csrf';
 import { get } from '@/lib/request';

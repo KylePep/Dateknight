@@ -1,15 +1,7 @@
 import { ensureCsrf } from "@/lib/csrf";
 import { patch, post } from "@/lib/request";
+import { Friend } from "@/types/friend";
 import { useState } from "react";
-
-interface Friend {
-  friendship_id: number;
-  id: number;
-  name: string;
-  profile: {
-    avatar: string;
-  }
-}
 
 export default function FriendCard({ friend }: { friend: Friend }) {
   return (
