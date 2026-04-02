@@ -1,6 +1,6 @@
 "use client";
 
-import CreateDateForm from "@/app/components/createDateForm";
+import CreateDateForm from "@/app/components/CreateDateForm";
 import DateCard, { MyDateCard } from "@/app/components/DateCard";
 import api from "@/lib/api";
 import { useEffect, useState } from "react";
