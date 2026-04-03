@@ -11,9 +11,7 @@ class DateController extends Controller
     public function __construct(
         protected DateService $date_service
     )
-    {
-        throw new \Exception('Not implemented');
-    }
+    {}
     /**
      * Display a listing of the resource.
      */
@@ -36,7 +34,7 @@ class DateController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'require|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:2500',
             'is_public' => 'required|boolean',
         ]);
