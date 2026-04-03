@@ -13,6 +13,10 @@ export default function Navbar() {
         DateKnight
       </button>
 
+      {user != null && (
+        <button onClick={() => router.push('/lobby')}>Date Fight</button>
+      )}
+
       {loading ? (
         <div className='bg-blue-900 text-white px-4 py-2 rounded w-xs animate-pulse'></div> // or skeleton / nothing
       ) : user != null ? (
