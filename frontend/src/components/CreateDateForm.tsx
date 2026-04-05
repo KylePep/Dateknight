@@ -1,8 +1,7 @@
 'use client';
 
+import { axios } from '@/lib/axios';
 import { useState, FormEvent } from 'react';
-import { ensureCsrf } from '@/lib/csrf';
-import { post } from '@/lib/request';
 
 interface CreateDateFormProps {
   onDateCreated: (date: DateItem) => void;
@@ -53,13 +52,12 @@ export default function CreateDateForm({ onDateCreated }: CreateDateFormProps) {
     setError('');
 
     try {
-      await ensureCsrf();
 
       const payload = {
         title, description, is_public: isPublic
       }
 
-      const res = await post<CreateDateResponse>('/api/dates', payload);
+      const res = await axios.post<CreateDateResponse>('/api/dates', payload);
 
 
       onDateCreated(res.data.data);

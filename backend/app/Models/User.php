@@ -80,4 +80,12 @@ class User extends Authenticatable
     {
         return $this->friendsOfMine->merge($this->friendOf);
     }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class)
+            ->withPivot(['joined_at', 'left_at'])
+            ->withTimestamps();
+    }
+
 }

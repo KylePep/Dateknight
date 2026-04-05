@@ -36,6 +36,21 @@ const Navigation = ({ user }) => {
                                 active={usePathname() === '/dashboard'}>
                                 Dashboard
                             </NavLink>
+                            <NavLink
+                                href="/date"
+                                active={usePathname() === '/date'}>
+                                Dates
+                            </NavLink>
+                            <NavLink
+                                href="/friend"
+                                active={usePathname() === '/friend'}>
+                                Friends
+                            </NavLink>
+                            <NavLink
+                                href="/lobby"
+                                active={usePathname() === '/lobby'}>
+                                Lobby
+                            </NavLink>
                         </div>
                     </div>
 
@@ -110,6 +125,21 @@ const Navigation = ({ user }) => {
                             href="/dashboard"
                             active={usePathname() === '/dashboard'}>
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/date"
+                            active={usePathname() === '/date'}>
+                            Dates
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/friend"
+                            active={usePathname() === '/friend'}>
+                            Friends
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href="/lobby"
+                            active={usePathname() === '/lobby'}>
+                            Lobby
                         </ResponsiveNavLink>
                     </div>
 

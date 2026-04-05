@@ -1,12 +1,12 @@
 "use client";
 
-import CreateDateForm from "@/app/components/CreateDateForm";
-import DateCard, { MyDateCard } from "@/app/components/DateCard";
-import api from "@/lib/api";
+import DateCard, { MyDateCard } from "@/components/DateCard";
+import CreateDateForm from "@/components/CreateDateForm";
 import { useEffect, useState } from "react";
+import { axios } from "@/lib/axios";
 
 export default function DatePage() {
-  const [otherDates, setOtherDates] = useState<DateItem[]>([]);
+  // const [otherDates, setOtherDates] = useState<DateItem[]>([]);
   const [friendDates, setFriendDates] = useState<DateItem[]>([]);
   const [myDates, setMyDates] = useState<DateItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,11 +14,11 @@ export default function DatePage() {
   useEffect(() => {
     async function fetchDates() {
       try {
-        const res = await api.get<{ public_others: DateItem[], public_friends: DateItem[], mine: DateItem[] }>("/api/dates", {
+        const res = await axios.get<{ public_others: DateItem[], public_friends: DateItem[], mine: DateItem[] }>("/api/dates", {
           withCredentials: true,
         });
 
-        setOtherDates(res.data.public_others);
+        // setOtherDates(res.data.public_others);
         setFriendDates(res.data.public_friends);
         setMyDates(res.data.mine);
       } catch (err) {
@@ -69,7 +69,7 @@ export default function DatePage() {
         ) : (
           <p>No public dates yet.</p>
         )}
-        <h2 className="font-bold text-lg mb-2">Other's Public Dates</h2>
+        {/* <h2 className="font-bold text-lg mb-2">Other's Public Dates</h2>
         {otherDates.length > 0 ? (
           <ul className="flex flex-col gap-2">
             {otherDates.map(date => (
@@ -78,7 +78,7 @@ export default function DatePage() {
           </ul>
         ) : (
           <p>No public dates yet.</p>
-        )}
+        )} */}
       </div>
     </div>
   );
