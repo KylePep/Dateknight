@@ -31,6 +31,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
     })
     ->withSchedule(function (Schedule $schedule){
-        $schedule->command('rooms:cleanup')->everyMinute();
+        $schedule->command('rooms:cleanup')->everyThirtyMinutes();
     })
     ->create();

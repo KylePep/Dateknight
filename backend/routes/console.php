@@ -6,7 +6,7 @@ use App\Models\Room;
 use Illuminate\Console\Scheduling\Schedule;
 
 Artisan::command('rooms:cleanup', function () {
-    $threshold = now()->subMinutes(5);
+    $threshold = now()->subMinutes(30);
     $deleted = Room::where('updated_at', '<', $threshold)
     ->delete();
 
