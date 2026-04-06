@@ -8,6 +8,7 @@ import { Friend } from '@/types/friend';
 import FriendCard from '@/components/FriendCard';
 import { useRouter } from 'next/navigation';
 import RoomsList from '@/components/RoomsList';
+import Header from '../Header';
 
 
 
@@ -65,29 +66,33 @@ export default function Lobby() {
 
 
   return (
-    <div>
-      <div>
-        <h1>Lobby</h1>
-        <h2>FRIENDS</h2>
-        {friends && friends.length > 0 ? (
-          friends.map((friend) => (
-            <div key={friend.id} className='flex'>
-              <FriendCard friend={friend} />
-              <button onClick={() => createRoom(friend.id)}
-                className='bg-sky-300 hover:bg-sky-600 hover:text-white rounded-lg px-4 py-2 font-bold duration-100'
-              >
-                Connect
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No friends yet.</p>
-        )}
-      </div>
-      <div>
-        <RoomsList />
-      </div>
-    </div >
+    <>
+      <Header title="Lobby" />
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div>
+            <h2>FRIENDS</h2>
+            {friends && friends.length > 0 ? (
+              friends.map((friend) => (
+                <div key={friend.id} className='flex'>
+                  <FriendCard friend={friend} />
+                  <button onClick={() => createRoom(friend.id)}
+                    className='bg-sky-300 hover:bg-sky-600 hover:text-white rounded-lg px-4 py-2 font-bold duration-100'
+                  >
+                    Connect
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No friends yet.</p>
+            )}
+          </div>
+          <div>
+            <RoomsList />
+          </div>
+        </div >
+      </div >
+    </ >
   );
 
 }

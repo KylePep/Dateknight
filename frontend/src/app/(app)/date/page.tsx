@@ -4,6 +4,7 @@ import DateCard, { MyDateCard } from "@/components/DateCard";
 import CreateDateForm from "@/components/CreateDateForm";
 import { useEffect, useState } from "react";
 import { axios } from "@/lib/axios";
+import Header from "../Header";
 
 export default function DatePage() {
   // const [otherDates, setOtherDates] = useState<DateItem[]>([]);
@@ -38,48 +39,55 @@ export default function DatePage() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="flex min-h-screen gap-8 p-4">
-      {/* Left: Form + My Dates */}
-      <div className="flex-1 flex flex-col gap-4">
-        <CreateDateForm onDateCreated={handleNewDate} />
+    <>
+      <Header title="Dates" />
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="flex min-h-screen gap-8 p-4">
+            {/* Left: Form + My Dates */}
+            <div className="flex-1 flex flex-col gap-4">
+              <CreateDateForm onDateCreated={handleNewDate} />
 
-        <section>
-          <h2 className="font-bold text-lg mb-2">My Dates</h2>
-          {myDates.length > 0 ? (
-            <ul className="flex flex-col gap-2">
-              {myDates.map(date => (
-                <MyDateCard key={date.id} date={date} />
-              ))}
-            </ul>
-          ) : (
-            <p>No dates yet.</p>
-          )}
-        </section>
-      </div>
+              <section>
+                <h2 className="font-bold text-lg mb-2">My Dates</h2>
+                {myDates.length > 0 ? (
+                  <ul className="flex flex-col gap-2">
+                    {myDates.map(date => (
+                      <MyDateCard key={date.id} date={date} />
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No dates yet.</p>
+                )}
+              </section>
+            </div>
 
-      {/* Right: All Public Dates */}
-      <div className="flex-1">
-        <h2 className="font-bold text-lg mb-2"> Friend's Public Dates</h2>
-        {friendDates.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {friendDates.map(date => (
-              <DateCard key={date.id} date={date} />
-            ))}
-          </ul>
-        ) : (
-          <p>No public dates yet.</p>
-        )}
-        {/* <h2 className="font-bold text-lg mb-2">Other's Public Dates</h2>
+            {/* Right: All Public Dates */}
+            <div className="flex-1">
+              <h2 className="font-bold text-lg mb-2"> Friend's Public Dates</h2>
+              {friendDates.length > 0 ? (
+                <ul className="flex flex-col gap-2">
+                  {friendDates.map(date => (
+                    <DateCard key={date.id} date={date} />
+                  ))}
+                </ul>
+              ) : (
+                <p>No public dates yet.</p>
+              )}
+              {/* <h2 className="font-bold text-lg mb-2">Other's Public Dates</h2>
         {otherDates.length > 0 ? (
           <ul className="flex flex-col gap-2">
-            {otherDates.map(date => (
+          {otherDates.map(date => (
               <DateCard key={date.id} date={date} />
-            ))}
-          </ul>
+              ))}
+              </ul>
         ) : (
           <p>No public dates yet.</p>
         )} */}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

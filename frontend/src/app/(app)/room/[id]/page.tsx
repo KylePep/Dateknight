@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import useEcho from "@/hooks/echo";
 import { axios } from "@/lib/axios";
 import { MyDateCard } from "@/components/DateCard";
+import Header from "../../Header";
 
 export default function RoomPage() {
   const params = useParams();
@@ -85,41 +86,44 @@ export default function RoomPage() {
 
   return (
     <div>
-      <button onClick={leaveRoom}>Leave Room</button>
+      <Header title="Room" />
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <button onClick={leaveRoom}>Leave Room</button>
 
-      <h1>Room {roomId} | Status {room?.status}</h1>
+          <h1>Room {roomId} | Status {room?.status}</h1>
 
-      <section>
-        <h2 className="font-bold text-lg mb-2">Users</h2>
-        {room?.users.length > 0 ? (
-          <ul className="flex gap-2">
-            {room.users.map(user => (
-              <div key={user.id}>
-                {user.name}
-              </div>
-            ))}
-          </ul>
-        ) : (
-          <p>Getting Users</p>
-        )}
-      </section>
-      <div className="flex-1 flex flex-col gap-4">
+          <section>
+            <h2 className="font-bold text-lg mb-2">Users</h2>
+            {room?.users.length > 0 ? (
+              <ul className="flex gap-2">
+                {room.users.map(user => (
+                  <div key={user.id}>
+                    {user.name}
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>Getting Users</p>
+            )}
+          </section>
+          <div className="flex-1 flex flex-col gap-4">
 
-        <section>
-          <h2 className="font-bold text-lg mb-2">My Dates</h2>
-          {myDates.length > 0 ? (
-            <ul className="flex flex-col gap-2">
-              {myDates.map(date => (
-                <MyDateCard key={date.id} date={date} />
-              ))}
-            </ul>
-          ) : (
-            <p>Getting Dates</p>
-          )}
-        </section>
-      </div>
+            <section>
+              <h2 className="font-bold text-lg mb-2">My Dates</h2>
+              {myDates.length > 0 ? (
+                <ul className="flex flex-col gap-2">
+                  {myDates.map(date => (
+                    <MyDateCard key={date.id} date={date} />
+                  ))}
+                </ul>
+              ) : (
+                <p>Getting Dates</p>
+              )}
+            </section>
+          </div>
 
-      {/* {messages.length > 0 ? (
+          {/* {messages.length > 0 ? (
         <div>
           {messages.map((m, i) => (
             <div key={i}><strong>{m.user?.name}:</strong> {m.message}</div>
@@ -130,6 +134,8 @@ export default function RoomPage() {
       )}
       <input value={newMsg} onChange={e => setNewMsg(e.target.value)} />
       <button onClick={sendMessage}>Send</button> */}
+        </div>
+      </div>
     </div>
   );
 }
