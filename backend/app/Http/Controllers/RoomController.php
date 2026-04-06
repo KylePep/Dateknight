@@ -37,6 +37,14 @@ class RoomController extends Controller
         return response()->json($room);
     }
 
+    public function show(Room $room)
+    {
+        $room->load([
+            'users.profile'
+        ]);
+        return response()->json($room);
+    }
+
     public function leave(Room $room, RoomService $service)
     {
         $user = Auth::user();

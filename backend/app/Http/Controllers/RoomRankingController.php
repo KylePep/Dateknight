@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
 use App\Models\RoomRanking;
+use App\Services\RoomFlowService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoomRankingController extends Controller
 {
+    public function __construct(
+        protected RoomFlowService $roomFlowService
+    )
+    {}
     /**
      * Display a listing of the resource.
      */
@@ -26,9 +33,10 @@ class RoomRankingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Room $room)
     {
-        //
+        return $this->roomFlowService
+            ->submitRankings(Auth::user(), $room, $request->date_ids, $request->date_rankings);
     }
 
     /**
