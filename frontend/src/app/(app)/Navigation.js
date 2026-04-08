@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 
 const Navigation = ({ user }) => {
     const { logout } = useAuth()
-
+    const pathname = usePathname()
     const [open, setOpen] = useState(false)
 
 
@@ -33,22 +33,22 @@ const Navigation = ({ user }) => {
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <NavLink
                                 href="/dashboard"
-                                active={usePathname() === '/dashboard'}>
+                                active={pathname === '/dashboard'}>
                                 Dashboard
                             </NavLink>
                             <NavLink
                                 href="/date"
-                                active={usePathname() === '/date'}>
+                                active={pathname === '/date'}>
                                 Dates
                             </NavLink>
                             <NavLink
                                 href="/friend"
-                                active={usePathname() === '/friend'}>
+                                active={pathname === '/friend'}>
                                 Friends
                             </NavLink>
                             <NavLink
                                 href="/lobby"
-                                active={usePathname() === '/lobby'}>
+                                active={pathname === '/lobby'}>
                                 Lobby
                             </NavLink>
                         </div>
@@ -123,22 +123,22 @@ const Navigation = ({ user }) => {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
                             href="/dashboard"
-                            active={usePathname() === '/dashboard'}>
+                            active={pathname === '/dashboard'}>
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href="/date"
-                            active={usePathname() === '/date'}>
+                            active={pathname === '/date'}>
                             Dates
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href="/friend"
-                            active={usePathname() === '/friend'}>
+                            active={pathname === '/friend'}>
                             Friends
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href="/lobby"
-                            active={usePathname() === '/lobby'}>
+                            active={pathname === '/lobby'}>
                             Lobby
                         </ResponsiveNavLink>
                     </div>
